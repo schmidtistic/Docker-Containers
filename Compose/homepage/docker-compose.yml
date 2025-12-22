@@ -1,9 +1,7 @@
-version: "3.8"
-
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage2
+    container_name: homepage
     restart: unless-stopped
 
     ports:
@@ -24,13 +22,9 @@ services:
       - /mnt:/mnt
 
     networks:
-      - bridge
       - schmidthouse
 
 networks:
-  bridge:
-    external: true
-
   schmidthouse:
     external: true
     name: SchmidtHouse
