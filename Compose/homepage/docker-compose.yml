@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+
+    ports:
+      - "3550:3000"
+
+    environment:
+      TZ: America/New_York
+      NODE_ENV: production
+      PORT: 3000
+      HOMEPAGE_ALLOWED_HOSTS: 192.168.1.174:3550
+      HOST_CONTAINERNAME: homepage
+      HOST_HOSTNAME: UnraidNAS
+      HOST_OS: Unraid
+
+    volumes:
+      - /mnt/user/appdata/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt:/mnt
+
+    networks:
+      - bridge
+      - schmidthouse
+
+networks:
+  bridge:
+    external: true
+
+  schmidthouse:
+    external: true
+    name: SchmidtHouse
