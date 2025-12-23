@@ -5,15 +5,21 @@ services:
     restart: unless-stopped
     entrypoint: /init
 
+    # 🔑 THIS IS THE FIX
+    network_mode: bridge
+
     env_file:
       - /mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env
 
     environment:
       TZ: ${TZ}
+
       FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
       PLUS_API_KEY: ${PLUS_API_KEY}
+
       NVIDIA_VISIBLE_DEVICES: ${NVIDIA_VISIBLE_DEVICES}
       NVIDIA_DRIVER_CAPABILITIES: ${NVIDIA_DRIVER_CAPABILITIES}
+
       TOKENIZERS_PARALLELISM: "true"
       TRANSFORMERS_NO_ADVISORY_WARNINGS: "1"
 
