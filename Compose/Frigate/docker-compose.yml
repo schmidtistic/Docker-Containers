@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable-tensorrt@sha256:209f1fe2a480cba1cb40482c932433fbc6ccacb3ed50f83b2c9fb29564e87c33
+    restart: unless-stopped
+    entrypoint: /init
+
+    env_file:
+      - /mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env
+
+    environment:
+      TZ: ${TZ}
+      FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
+      PLUS_API_KEY: ${PLUS_API_KEY}
+
+      NVIDIA_VISIBLE_DEVICES: ${NVIDIA_VISIBLE_DEVICES}
+      NVIDIA_DRIVER_CAPABILITIES: ${NVIDIA_DRIVER_CAPABILITIES}
+
+      TOKENIZERS_PARALLELISM: "true"
+      TRANSFORMERS_NO_ADVISORY_WARNINGS: "1"
+
+    ports:
+      - "5000:5000"
+      - "${PORT_FRIGATE_RTSP}:8554"
+      - "${PORT_FRIGATE_WEBRTC}:8555/tcp"
+      - "${PORT_FRIGATE_WEBRTC}:8555/udp"
+      - "${PORT_FRIGATE_UI}:8971"
+
+    volumes:
+      - ${FRIGATE_CONFIG_PATH}:/config
+      - ${FRIGATE_MEDIA_PATH}:/media/frigate
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/cache:/tmp/cache
+
+    shm_size: "64mb"
+
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+
+    networks:
+      - bridge
+
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://localhost:8971"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+networks:
+  bridge:
+    external: true
