@@ -1,0 +1,73 @@
+services:
+  paperless:
+    container_name: Paperless-NGX
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    entrypoint: /init
+    restart: always
+
+    depends_on:
+      - db
+      - redis
+
+    ports:
+      - "8777:8000"
+
+    environment:
+      PAPERLESS_ADMIN_USER: schmidtistic
+      PAPERLESS_ADMIN_PASSWORD: 6@yp?aobS!
+      PAPERLESS_DBHOST: db
+      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_TIME_ZONE: America/New_York
+      PAPERLESS_OCR_LANGUAGE: deu+eng
+      USERMAP_UID: 1000
+      USERMAP_GID: 1000
+      LANG: C.UTF-8
+
+    volumes:
+      - /mnt/user/appdata/paperless-ngx/data:/usr/src/paperless/data
+      - /mnt/user/appdata/paperless-ngx/media:/usr/src/paperless/media
+      - /mnt/user/appdata/paperless-ngx/export:/usr/src/paperless/export
+      - /mnt/user/appdata/paperless-ngx/consume:/usr/src/paperless/consume
+
+    networks:
+      - paperless_net
+
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "-S", "-L", "--max-time", "2", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  db:
+    container_name: Paperless-NGX-DB
+    image: postgres:16-alpine
+    restart: always
+
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+
+    volumes:
+      - /mnt/user/appdata/paperless-ngx/db:/var/lib/postgresql/data
+
+    networks:
+      - paperless_net
+
+
+  redis:
+    container_name: Paperless-NGX-REDIS
+    image: redis:7-alpine
+    restart: always
+
+    volumes:
+      - /mnt/user/appdata/paperless-ngx/redis:/data
+
+    networks:
+      - paperless_net
+
+
+networks:
+  paperless_net:
+    external: true
