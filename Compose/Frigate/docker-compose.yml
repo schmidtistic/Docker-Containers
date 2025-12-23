@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     entrypoint: /init
 
-    # 🔑 THIS IS THE FIX
+    # Match Unraid GUI behavior exactly
     network_mode: bridge
 
     env_file:
@@ -14,19 +14,22 @@ services:
     environment:
       TZ: ${TZ}
 
+      # Frigate / go2rtc
       FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
       PLUS_API_KEY: ${PLUS_API_KEY}
 
+      # NVIDIA GPU
       NVIDIA_VISIBLE_DEVICES: ${NVIDIA_VISIBLE_DEVICES}
       NVIDIA_DRIVER_CAPABILITIES: ${NVIDIA_DRIVER_CAPABILITIES}
 
+      # Runtime tuning
       TOKENIZERS_PARALLELISM: "true"
       TRANSFORMERS_NO_ADVISORY_WARNINGS: "1"
 
     ports:
-      - "8971:8971"
-      - "8554:8554"
-      - "8555:8555/tcp"
+      - "8971:8971"       # UI / API
+      - "8554:8554"       # RTSP
+      - "8555:8555/tcp"   # WebRTC
       - "8555:8555/udp"
 
     volumes:
@@ -36,7 +39,10 @@ services:
       - /tmp/cache:/tmp/cache
 
     devices:
+      # USB Coral
       - /dev/bus/usb:/dev/bus/usb
+
+      # NVIDIA GPU (explicit like Unraid)
       - /dev/nvidia0:/dev/nvidia0
       - /dev/nvidiactl:/dev/nvidiactl
       - /dev/nvidia-modeset:/dev/nvidia-modeset
