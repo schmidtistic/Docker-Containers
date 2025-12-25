@@ -1,0 +1,1 @@
+docker compose   --env-file "/mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env"   up -d
