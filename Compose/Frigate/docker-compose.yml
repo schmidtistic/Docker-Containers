@@ -8,6 +8,8 @@ services:
     # Match Unraid GUI behavior exactly
     network_mode: bridge
 
+    gpus: all 
+
     env_file:
       - /mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env
 
@@ -26,7 +28,7 @@ services:
       TRANSFORMERS_NO_ADVISORY_WARNINGS: "1"
 
     ports:
-      - "8971:8971"       # UI / API
+      - "5000:5000"       # UI / API
       - "8554:8554"       # RTSP
       - "8555:8555/tcp"   # WebRTC
       - "8555:8555/udp"
@@ -40,13 +42,6 @@ services:
     devices:
       # USB Coral
       - /dev/bus/usb:/dev/bus/usb
-
-      # NVIDIA GPU (explicit like Unraid)
-      - /dev/nvidia0:/dev/nvidia0
-      - /dev/nvidiactl:/dev/nvidiactl
-      - /dev/nvidia-modeset:/dev/nvidia-modeset
-      - /dev/nvidia-uvm:/dev/nvidia-uvm
-      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
 
     shm_size: "64mb"
 
