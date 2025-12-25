@@ -2,8 +2,7 @@ services:
   paperless:
     container_name: Paperless-NGX
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
-    entrypoint: /init
-    restart: always
+    restart: unless-stopped
 
     depends_on:
       - db
@@ -13,59 +12,66 @@ services:
       - "8777:8000"
 
     environment:
-      PAPERLESS_ADMIN_USER: schmidtistic
-      PAPERLESS_ADMIN_PASSWORD: 6@yp?aobS!
+      # Admin user (created only on first startup)
+      PAPERLESS_ADMIN_USER: ${PAPERLESS_ADMIN_USER}
+      PAPERLESS_ADMIN_PASSWORD: ${PAPERLESS_ADMIN_PASSWORD}
+
+      # Database
       PAPERLESS_DBHOST: db
+      PAPERLESS_DBNAME: ${PAPERLESS_DB_NAME}
+      PAPERLESS_DBUSER: ${PAPERLESS_DB_USER}
+      PAPERLESS_DBPASS: ${PAPERLESS_DB_PASSWORD}
+
+      # Redis
       PAPERLESS_REDIS: redis://redis:6379
-      PAPERLESS_TIME_ZONE: America/New_York
+
+      # General
+      PAPERLESS_TIME_ZONE: ${TZ}
       PAPERLESS_OCR_LANGUAGE: deu+eng
       USERMAP_UID: 1000
-      USERMAP_GID: 1000
+      USERMAP_GID: 100
       LANG: C.UTF-8
 
     volumes:
-      - /mnt/user/appdata/paperless-ngx/data:/usr/src/paperless/data
-      - /mnt/user/appdata/paperless-ngx/media:/usr/src/paperless/media
-      - /mnt/user/appdata/paperless-ngx/export:/usr/src/paperless/export
-      - /mnt/user/appdata/paperless-ngx/consume:/usr/src/paperless/consume
+      - ${APPDATA_ROOT}/paperless-ngx/data:/usr/src/paperless/data
+      - ${APPDATA_ROOT}/paperless-ngx/media:/usr/src/paperless/media
+      - ${APPDATA_ROOT}/paperless-ngx/export:/usr/src/paperless/export
+      - ${APPDATA_ROOT}/paperless-ngx/consume:/usr/src/paperless/consume
 
     networks:
       - paperless_net
 
-    healthcheck:
-      test: ["CMD", "curl", "-fs", "-S", "-L", "--max-time", "2", "http://localhost:8000"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
 
   db:
     container_name: Paperless-NGX-DB
     image: postgres:16-alpine
-    restart: always
+    restart: unless-stopped
 
     environment:
-      POSTGRES_DB: paperless
-      POSTGRES_USER: paperless
-      POSTGRES_PASSWORD: paperless
+      POSTGRES_DB: ${PAPERLESS_DB_NAME}
+      POSTGRES_USER: ${PAPERLESS_DB_USER}
+      POSTGRES_PASSWORD: ${PAPERLESS_DB_PASSWORD}
 
     volumes:
-      - /mnt/user/appdata/paperless-ngx/db:/var/lib/postgresql/data
+      - ${APPDATA_ROOT}/paperless-ngx/db:/var/lib/postgresql/data
 
     networks:
       - paperless_net
+
 
 
   redis:
     container_name: Paperless-NGX-REDIS
     image: redis:7-alpine
-    restart: always
+    restart: unless-stopped
 
     volumes:
-      - /mnt/user/appdata/paperless-ngx/redis:/data
+      - ${APPDATA_ROOT}/paperless-ngx/redis:/data
 
     networks:
       - paperless_net
+
 
 
 networks:
