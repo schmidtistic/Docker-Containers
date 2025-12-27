@@ -48,7 +48,7 @@ services:
     shm_size: "64mb"
 
     healthcheck:
-      test: ["CMD", "curl", "-fs", "http://localhost:8971"]
+      test: ["CMD", "curl", "-fs", "http://localhost:5000"]
       interval: 30s
       timeout: 10s
       retries: 5
