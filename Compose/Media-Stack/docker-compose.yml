@@ -93,7 +93,7 @@ services:
     ports:
       - "9696:9696"
     env_file:
-      - .env
+      - /mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env
     environment:
       PUID: ${ARR_PUID}
       PGID: ${ARR_PGID}
