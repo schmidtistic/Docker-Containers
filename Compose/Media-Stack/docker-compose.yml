@@ -1,0 +1,119 @@
+version: "3.8"
+
+services:
+  media-sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: media-sabnzbd
+    restart: unless-stopped
+    networks:
+      br0:
+        ipv4_address: 192.168.2.230
+      SchmidtHouse: {}
+    env_file:
+      - .env
+    environment:
+      PUID: ${ARR_PUID}
+      PGID: ${ARR_PGID}
+      TZ: ${TZ}
+      UMASK: ${ARR_UMASK}
+      HOST_WHITELIST: "media-sabnzbd,media-radarr,media-sonarr,media-prowlarr,localhost,127.0.0.1"
+    volumes:
+      - ${APPDATA_ROOT}/sabnzbd:/config
+      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+      - ${DOWNLOADS_INCOMPLETE}:/downloads/incomplete
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080'"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
+  media-radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: media-radarr
+    restart: unless-stopped
+    networks:
+      - SchmidtHouse
+    ports:
+      - "7878:7878"
+    env_file:
+      - .env
+    environment:
+      PUID: ${ARR_PUID}
+      PGID: ${ARR_PGID}
+      TZ: ${TZ}
+      UMASK: ${ARR_UMASK}
+    volumes:
+      - ${APPDATA_ROOT}/radarr:/config
+      - ${MEDIA_MOVIES}:/movies
+      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+    depends_on:
+      - media-sabnzbd
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/7878'"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
+  media-sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: media-sonarr
+    restart: unless-stopped
+    networks:
+      - SchmidtHouse
+    ports:
+      - "8989:8989"
+    env_file:
+      - .env
+    environment:
+      PUID: ${ARR_PUID}
+      PGID: ${ARR_PGID}
+      TZ: ${TZ}
+      UMASK: ${ARR_UMASK}
+    volumes:
+      - ${APPDATA_ROOT}/sonarr:/config
+      - ${MEDIA_TV}:/tv
+      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+    depends_on:
+      - media-sabnzbd
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8989'"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
+  media-prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: media-prowlarr
+    restart: unless-stopped
+    networks:
+      - SchmidtHouse
+    ports:
+      - "9696:9696"
+    env_file:
+      - .env
+    environment:
+      PUID: ${ARR_PUID}
+      PGID: ${ARR_PGID}
+      TZ: ${TZ}
+      UMASK: ${ARR_UMASK}
+    volumes:
+      - ${APPDATA_ROOT}/prowlarr:/config
+    depends_on:
+      - media-sabnzbd
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/9696'"]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
+networks:
+  br0:
+    external: true
+    name: br0
+  SchmidtHouse:
+    external: true
+    name: SchmidtHouse
