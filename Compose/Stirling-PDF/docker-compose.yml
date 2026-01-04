@@ -1,0 +1,30 @@
+
+
+services:
+  stirling-pdf:
+    image: frooodle/s-pdf:latest
+    container_name: stirling-pdf
+    restart: unless-stopped
+
+    ports:
+      - "8085:8080"
+
+    environment:
+      TZ: ${TZ}
+      PUID: ${ARR_PUID}
+      PGID: ${ARR_PGID}
+      UMASK: ${ARR_UMASK}
+
+      # Optional but recommended
+      DOCKER_ENABLE_SECURITY: "true"
+      LANG: en_US.UTF-8
+      OCR_LANGS: eng
+
+    volumes:
+      - ${APPDATA_ROOT}/stirling-pdf/config:/config
+      - ${APPDATA_ROOT}/stirling-pdf/customFiles:/customFiles
+      - ${APPDATA_ROOT}/stirling-pdf/logs:/logs
+      - ${APPDATA_ROOT}/stirling-pdf/pipeline:/pipeline
+
+    security_opt:
+      - no-new-privileges:true
