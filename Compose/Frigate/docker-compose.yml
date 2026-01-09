@@ -29,10 +29,10 @@ services:
 
     # Ports
     ports:
-      - "5000:5000"        # UI / API
-      - "8554:8554"        # RTSP
-      - "8555:8555/tcp"    # WebRTC (TCP)
-      - "8555:8555/udp"    # WebRTC (UDP)
+      - "5000:5000" # UI / API
+      - "8554:8554" # RTSP
+      - "8555:8555/tcp" # WebRTC (TCP)
+      - "8555:8555/udp" # WebRTC (UDP)
 
     # Volumes
     volumes:
@@ -43,12 +43,12 @@ services:
 
     # Devices
     devices:
-      - /dev/bus/usb:/dev/bus/usb   # USB Coral
+      - /dev/bus/usb:/dev/bus/usb # USB Coral
 
     shm_size: "64mb"
 
     healthcheck:
-      test: ["CMD", "curl", "-fs", "http://localhost:5000"]
+      test: [ "CMD", "curl", "-fs", "http://localhost:5000" ]
       interval: 30s
       timeout: 10s
       retries: 5

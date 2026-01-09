@@ -41,8 +41,6 @@ services:
     networks:
       - paperless_net
 
-
-
   db:
     container_name: Paperless-NGX-DB
     image: postgres:16-alpine
@@ -59,8 +57,6 @@ services:
     networks:
       - paperless_net
 
-
-
   redis:
     container_name: Paperless-NGX-REDIS
     image: redis:7-alpine
@@ -71,8 +67,6 @@ services:
 
     networks:
       - paperless_net
-
-
 
 networks:
   paperless_net:
