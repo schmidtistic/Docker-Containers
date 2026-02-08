@@ -13,8 +13,6 @@ services:
       - PUID=${ARR_PUID}
       - PGID=${ARR_PGID}
       - UMASK=${ARR_UMASK}
-
-      # NVIDIA
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
 
@@ -26,3 +24,7 @@ services:
       - /tmp:/transcode
 
     restart: unless-stopped
+
+networks:
+  br1:
+    external: true
