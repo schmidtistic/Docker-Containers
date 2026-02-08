@@ -5,7 +5,7 @@ services:
 
     networks:
       br1:
-        ipv4_address: 192.168.1.174
+        ipv4_address: 192.168.1.175
 
     environment:
       - TZ=${TZ}
