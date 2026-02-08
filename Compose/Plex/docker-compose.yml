@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -25,24 +23,18 @@ services:
       # Plex Web UI
       - "32400:32400/tcp"
 
-      # Plex discovery & remote access helpers
+      # Plex discovery helpers (safe)
       - "1900:1900/udp"
-      - "5353:5353/udp"
       - "32410:32410/udp"
       - "32412:32412/udp"
       - "32413:32413/udp"
       - "32414:32414/udp"
 
     volumes:
-      # Plex config
       - ${APPDATA_ROOT}/plex:/config
-
-      # Media libraries
       - ${MEDIA_MOVIES}:/movies
       - ${MEDIA_TV}:/tv
       - ${MEDIA_MUSIC}:/music
-
-      # Transcode temp (RAM-backed)
       - /tmp:/transcode
 
     restart: unless-stopped
