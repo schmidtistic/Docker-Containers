@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+
+    network_mode: bridge
+
+    environment:
+      - TZ=America/New_York
+      - PUID=99
+      - PGID=100
+
+      # Force GUI to listen on all interfaces
+      - STGUIADDRESS=0.0.0.0:8384
+
+    ports:
+      # Web UI
+      - "8384:8384"
+
+      # Sync traffic
+      - "22000:22000/tcp"
+      - "22000:22000/udp"
+
+      # Local discovery
+      - "21027:21027/udp"
+
+    volumes:
+      # Syncthing config
+      - /mnt/user/appdata/syncthing:/config
+
+      # Data folders
+      - /mnt/user/ComputerSyncs:/data1
+      - /mnt/user/SyncThings:/data2
+
+    restart: unless-stopped
