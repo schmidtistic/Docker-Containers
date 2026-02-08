@@ -4,7 +4,10 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: host
+
+    networks:
+      SchmidtHouse:
+
 
     environment:
       - TZ=${TZ}
@@ -15,8 +18,20 @@ services:
       # NVIDIA GPU
       - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
       - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
-      # Optional but recommended for remote access stability
+      # Optional Plex claim token
       # - PLEX_CLAIM=claim-xxxxxxxxxxxx
+
+    ports:
+      # Plex Web UI
+      - "32400:32400/tcp"
+
+      # Plex discovery & remote access helpers
+      - "1900:1900/udp"
+      - "5353:5353/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
 
     volumes:
       # Plex config
@@ -27,7 +42,11 @@ services:
       - ${MEDIA_TV}:/tv
       - ${MEDIA_MUSIC}:/music
 
-      # Transcode temp (RAM is ideal if you have headroom)
+      # Transcode temp (RAM-backed)
       - /tmp:/transcode
 
     restart: unless-stopped
+
+networks:
+  SchmidtHouse:
+    external: true
