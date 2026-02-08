@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+
+    environment:
+      - TZ=${TZ}
+      - PUID=${ARR_PUID}
+      - PGID=${ARR_PGID}
+      - UMASK=${ARR_UMASK}
+
+      # NVIDIA GPU
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
+      # Optional but recommended for remote access stability
+      # - PLEX_CLAIM=claim-xxxxxxxxxxxx
+
+    volumes:
+      # Plex config
+      - ${APPDATA_ROOT}/plex:/config
+
+      # Media libraries
+      - ${MEDIA_MOVIES}:/movies
+      - ${MEDIA_TV}:/tv
+      - ${MEDIA_MUSIC}:/music
+
+      # Transcode temp (RAM is ideal if you have headroom)
+      - /tmp:/transcode
+
+    restart: unless-stopped
