@@ -3,6 +3,11 @@ services:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
 
+    device_requests:
+      - driver: nvidia
+        count: all
+        capabilities: [ gpu ]
+
     networks:
       br1:
         ipv4_address: 192.168.1.175
@@ -12,9 +17,8 @@ services:
       - PUID=${ARR_PUID}
       - PGID=${ARR_PGID}
       - UMASK=${ARR_UMASK}
-
-      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
-      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
 
     volumes:
       - ${APPDATA_ROOT}/plex:/config
@@ -24,7 +28,3 @@ services:
       - /tmp:/transcode
 
     restart: unless-stopped
-
-networks:
-  br1:
-    external: true
