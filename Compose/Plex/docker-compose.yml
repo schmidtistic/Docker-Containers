@@ -4,8 +4,8 @@ services:
     container_name: plex
 
     networks:
-      SchmidtHouse:
-
+      br1:
+        ipv4_address: 192.168.1.174
 
     environment:
       - TZ=${TZ}
@@ -13,22 +13,8 @@ services:
       - PGID=${ARR_PGID}
       - UMASK=${ARR_UMASK}
 
-      # NVIDIA GPU
       - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
       - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
-      # Optional Plex claim token
-      # - PLEX_CLAIM=claim-xxxxxxxxxxxx
-
-    ports:
-      # Plex Web UI
-      - "32400:32400/tcp"
-
-      # Plex discovery helpers (safe)
-      - "1900:1900/udp"
-      - "32410:32410/udp"
-      - "32412:32412/udp"
-      - "32413:32413/udp"
-      - "32414:32414/udp"
 
     volumes:
       - ${APPDATA_ROOT}/plex:/config
@@ -40,5 +26,5 @@ services:
     restart: unless-stopped
 
 networks:
-  SchmidtHouse:
+  br1:
     external: true
