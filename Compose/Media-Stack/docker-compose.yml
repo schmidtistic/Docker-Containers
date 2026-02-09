@@ -20,7 +20,7 @@ services:
     volumes:
       - ${APPDATA_ROOT}/radarr:/config
       - ${MEDIA_MOVIES}:/movies
-      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+      - ${DOWNLOADS_ROOT}:/downloads
 
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/7878'" ]
@@ -49,7 +49,7 @@ services:
     volumes:
       - ${APPDATA_ROOT}/sonarr:/config
       - ${MEDIA_TV}:/tv
-      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+      - ${DOWNLOADS_ROOT}:/downloads
 
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8989'" ]
@@ -78,7 +78,7 @@ services:
     volumes:
       - ${APPDATA_ROOT}/lidarr:/config
       - ${MEDIA_MUSIC}:/music
-      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+      - ${DOWNLOADS_ROOT}:/downloads
 
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8686'" ]
