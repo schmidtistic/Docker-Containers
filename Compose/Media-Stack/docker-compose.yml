@@ -1,32 +1,4 @@
 services:
-  media-sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
-    container_name: media-sabnzbd
-    restart: unless-stopped
-
-    networks:
-      br0:
-        ipv4_address: 192.168.2.230
-      SchmidtHouse: {}
-
-    environment:
-      PUID: ${ARR_PUID}
-      PGID: ${ARR_PGID}
-      TZ: ${TZ}
-      UMASK: ${ARR_UMASK}
-      HOST_WHITELIST: "media-sabnzbd,media-radarr,media-sonarr,media-prowlarr,media-lidarr,localhost,127.0.0.1"
-
-    volumes:
-      - ${APPDATA_ROOT}/sabnzbd:/config
-      - ${DOWNLOADS_COMPLETE}:/downloads/complete
-      - ${DOWNLOADS_INCOMPLETE}:/downloads/incomplete
-
-    healthcheck:
-      test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080'" ]
-      interval: 30s
-      timeout: 5s
-      retries: 6
-      start_period: 90s
 
   media-radarr:
     image: lscr.io/linuxserver/radarr:latest
