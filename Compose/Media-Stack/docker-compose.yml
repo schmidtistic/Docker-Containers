@@ -22,9 +22,6 @@ services:
       - ${MEDIA_MOVIES}:/movies
       - ${DOWNLOADS_COMPLETE}:/downloads/complete
 
-    depends_on:
-      - media-sabnzbd
-
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/7878'" ]
       interval: 30s
@@ -53,9 +50,6 @@ services:
       - ${APPDATA_ROOT}/sonarr:/config
       - ${MEDIA_TV}:/tv
       - ${DOWNLOADS_COMPLETE}:/downloads/complete
-
-    depends_on:
-      - media-sabnzbd
 
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8989'" ]
@@ -86,9 +80,6 @@ services:
       - ${MEDIA_MUSIC}:/music
       - ${DOWNLOADS_COMPLETE}:/downloads/complete
 
-    depends_on:
-      - media-sabnzbd
-
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8686'" ]
       interval: 30s
@@ -115,9 +106,6 @@ services:
 
     volumes:
       - ${APPDATA_ROOT}/prowlarr:/config
-
-    depends_on:
-      - media-sabnzbd
 
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/9696'" ]
