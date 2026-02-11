@@ -1,0 +1,5 @@
+Since port 8080 is used by SAB, you must SSH into this address to hit the dashboard
+
+ssh -L 18080:127.0.0.1:18080 root@192.168.1.174
+
+From your ssh'd computer: go to this web address: http://localhost:18080/dashboard/#/
