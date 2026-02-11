@@ -18,13 +18,18 @@ services:
 
     volumes:
       - /mnt/user/appdata/homepage:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /mnt:/mnt
 
     networks:
-      - schmidthouse
+      - SchmidtHouse
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`homepage.schmidtworx.com`)"
+      - "traefik.http.routers.homepage.entrypoints=web"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
 
 networks:
-  schmidthouse:
+  SchmidtHouse:
     external: true
-    name: SchmidtHouse
