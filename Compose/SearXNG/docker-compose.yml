@@ -1,0 +1,24 @@
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+
+    networks:
+      SchmidtHouse: {}
+
+    volumes:
+      - /mnt/user/appdata/searxng:/etc/searxng
+
+    environment:
+      - BASE_URL=http://search.schmidtworx.com/
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.searxng.rule=Host(`search.schmidtworx.com`)"
+      - "traefik.http.routers.searxng.entrypoints=web"
+      - "traefik.http.services.searxng.loadbalancer.server.port=8080"
+
+networks:
+  SchmidtHouse:
+    external: true
