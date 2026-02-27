@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: postgres:15-alpine
+    container_name: wiki-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /mnt/user/appdata/wiki/postgres:/var/lib/postgresql/data
+    networks:
+      - SchmidtHouse
+
+  wiki:
+    image: ghcr.io/requarks/wiki:2
+    container_name: wiki-js
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: ${WIKI_DB_HOST}
+      DB_PORT: ${WIKI_DB_PORT}
+      DB_USER: ${WIKI_DB_USER}
+      DB_PASS: ${WIKI_DB_PASS}
+      DB_NAME: ${WIKI_DB_NAME}
+    networks:
+      - SchmidtHouse
+    ports:
+      - "3010:3000" # Optional — remove if using Traefik only
+
+networks:
+  SchmidtHouse:
+    external: true
