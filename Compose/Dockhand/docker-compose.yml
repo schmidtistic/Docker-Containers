@@ -1,0 +1,25 @@
+services:
+  dockhand:
+    container_name: dockhand
+    image: fnsys/dockhand:latest
+    restart: unless-stopped
+
+    environment:
+      TZ: ${TZ}
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      # Docker socket so Dockhand can manage containers
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      # Persistent data
+      - ${APPDATA_ROOT}/dockhand:/data
+
+    networks:
+      - SchmidtHouse
+
+networks:
+  SchmidtHouse:
+    external: true
