@@ -2,7 +2,6 @@ services:
   frigate:
     container_name: frigate
     image: ghcr.io/blakeblackshear/frigate:stable-tensorrt
-    shm_size: "512mb"
     restart: unless-stopped
     entrypoint: /init
 
@@ -46,7 +45,7 @@ services:
     devices:
       - /dev/bus/usb:/dev/bus/usb # USB Coral
 
-    shm_size: "64mb"
+    shm_size: "512mb"
 
     healthcheck:
       test: [ "CMD", "curl", "-fs", "http://localhost:5000" ]
