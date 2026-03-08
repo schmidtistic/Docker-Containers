@@ -17,6 +17,9 @@ services:
       # Persistent data
       - ${APPDATA_ROOT}/dockhand:/data
 
+      # Compose Stacks 
+      - "/mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers:/stacks"
+
     networks:
       - SchmidtHouse
 
