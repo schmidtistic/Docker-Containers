@@ -1,0 +1,32 @@
+services:
+  sabnzbd:
+    container_name: sabnzbd
+    image: lscr.io/linuxserver/sabnzbd:latest
+    restart: unless-stopped
+
+    environment:
+      PUID: 99
+      PGID: 100
+      TZ: ${TZ}
+      UMASK: 2
+      HOST_WHITELIST: sabnzbd,radarr,sonarr,localhost,127.0.0.1
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - /mnt/user/appdata/sabnzbd:/config
+      - /mnt/user/Downloads/complete:/downloads/complete
+      - /mnt/user/Downloads/incomplete:/downloads/incomplete
+
+    networks:
+      SchmidtHouse:
+      br0:
+        ipv4_address: 192.168.2.230
+
+networks:
+  SchmidtHouse:
+    external: true
+
+  br0:
+    external: true
