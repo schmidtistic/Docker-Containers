@@ -1,7 +1,9 @@
-Hello
 docker compose   --env-file "/mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env"   up -d
 
 
 # Example where you only want to run 1 from a stack with no dependencies: Example is using Prowlarr from Media Stack
 
 docker compose   --env-file "/mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env"   up -d --no-deps media-prowlarr
+
+
+Use dockup instead of docker-compose and it will auto read in your env without having to paste it every time

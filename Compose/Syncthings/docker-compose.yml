@@ -35,3 +35,6 @@ services:
       - /mnt/user/SyncThings:/data2
 
     restart: unless-stopped
+
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/syncthing.png"

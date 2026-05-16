@@ -24,6 +24,9 @@ services:
       br0:
         ipv4_address: 192.168.2.230
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/sabnzbd.png"
+
 networks:
   SchmidtHouse:
     external: true

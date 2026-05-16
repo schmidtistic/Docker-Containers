@@ -26,3 +26,6 @@ services:
 
     security_opt:
       - no-new-privileges:true
+
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/stirling-pdf.png"

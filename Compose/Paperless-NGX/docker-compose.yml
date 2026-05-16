@@ -41,6 +41,9 @@ services:
     networks:
       - paperless_net
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/paperless-ngx.png"
+
   db:
     container_name: Paperless-NGX-DB
     image: postgres:16-alpine
@@ -57,6 +60,9 @@ services:
     networks:
       - paperless_net
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/postgres.png"
+
   redis:
     container_name: Paperless-NGX-REDIS
     image: redis:7-alpine
@@ -67,6 +73,9 @@ services:
 
     networks:
       - paperless_net
+
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/redis.png"
 
 networks:
   paperless_net:

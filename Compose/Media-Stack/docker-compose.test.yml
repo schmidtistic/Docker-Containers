@@ -1,5 +1,37 @@
 services:
 
+  media-sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: media-sabnzbd
+    restart: unless-stopped
+
+    networks:
+      SchmidtHouse:
+      br0:
+        ipv4_address: 192.168.2.230
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      PUID: ${ARR_PUID}
+      PGID: ${ARR_PGID}
+      TZ: ${TZ}
+      UMASK: ${ARR_UMASK}
+      HOST_WHITELIST: "media-sabnzbd,media-radarr,media-sonarr,localhost,127.0.0.1"
+
+    volumes:
+      - ${APPDATA_ROOT}/sabnzbd:/config
+      - ${DOWNLOADS_COMPLETE}:/downloads/complete
+      - ${DOWNLOADS_INCOMPLETE}:/downloads/incomplete
+
+    healthcheck:
+      test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080'" ]
+      interval: 30s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
   media-radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: media-radarr
@@ -53,35 +85,6 @@ services:
 
     healthcheck:
       test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8989'" ]
-      interval: 30s
-      timeout: 5s
-      retries: 6
-      start_period: 90s
-
-  media-lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: media-lidarr
-    restart: unless-stopped
-
-    networks:
-      - SchmidtHouse
-
-    ports:
-      - "8686:8686"
-
-    environment:
-      PUID: ${ARR_PUID}
-      PGID: ${ARR_PGID}
-      TZ: ${TZ}
-      UMASK: ${ARR_UMASK}
-
-    volumes:
-      - ${APPDATA_ROOT}/lidarr:/config
-      - ${MEDIA_MUSIC}:/music
-      - ${DOWNLOADS_ROOT}:/downloads
-
-    healthcheck:
-      test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8686'" ]
       interval: 30s
       timeout: 5s
       retries: 6

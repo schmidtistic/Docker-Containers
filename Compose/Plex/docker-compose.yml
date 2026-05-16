@@ -25,6 +25,9 @@ services:
 
     restart: unless-stopped
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/plex.png"
+
 networks:
   br1:
     external: true

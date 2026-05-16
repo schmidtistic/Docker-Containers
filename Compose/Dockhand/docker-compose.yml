@@ -23,6 +23,9 @@ services:
     networks:
       - SchmidtHouse
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/dockhand.png"
+
 networks:
   SchmidtHouse:
     external: true

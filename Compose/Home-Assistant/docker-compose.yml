@@ -22,6 +22,9 @@ services:
     ports:
       - "8123:8123"
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/home-assistant.png"
+
 networks:
   br2:
     external: true

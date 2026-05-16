@@ -29,6 +29,9 @@ services:
       retries: 6
       start_period: 90s
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/radarr.png"
+
   media-sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: media-sonarr
@@ -58,6 +61,9 @@ services:
       retries: 6
       start_period: 90s
 
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/sonarr.png"
+
   media-prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: media-prowlarr
@@ -84,6 +90,9 @@ services:
       timeout: 5s
       retries: 6
       start_period: 90s
+
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/prowlarr.png"
 
 networks:
   br0:

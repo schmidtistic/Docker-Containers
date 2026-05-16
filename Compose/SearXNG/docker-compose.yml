@@ -14,6 +14,7 @@ services:
       - BASE_URL=http://search.schmidtworx.com/
 
     labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/searxng.png"
       - "traefik.enable=true"
       - "traefik.http.routers.searxng.rule=Host(`search.schmidtworx.com`)"
       - "traefik.http.routers.searxng.entrypoints=web"

@@ -25,6 +25,7 @@ services:
       - SchmidtHouse
 
     labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/homepage.png"
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`homepage.schmidtworx.com`)"
       - "traefik.http.routers.homepage.entrypoints=web"
