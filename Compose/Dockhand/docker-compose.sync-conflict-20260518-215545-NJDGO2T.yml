@@ -1,0 +1,28 @@
+services:
+  dockhand:
+    container_name: dockhand
+    image: fnsys/dockhand:latest
+    restart: unless-stopped
+
+    environment:
+      TZ: ${TZ}
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      # Docker socket so Dockhand can manage containers
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      # Persistent data
+      - ${APPDATA_ROOT}/dockhand:/app/data
+
+      # Compose Stacks 
+      - "/mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers:/stacks"
+
+    networks:
+      - SchmidtHouse
+
+networks:
+  SchmidtHouse:
+    external: true
