@@ -15,6 +15,7 @@ services:
       # Admin user (created only on first startup)
       PAPERLESS_ADMIN_USER: ${PAPERLESS_ADMIN_USER}
       PAPERLESS_ADMIN_PASSWORD: ${PAPERLESS_ADMIN_PASSWORD}
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
 
       # Database
       PAPERLESS_DBHOST: db

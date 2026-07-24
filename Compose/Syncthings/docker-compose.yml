@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
@@ -31,7 +29,7 @@ services:
       - /mnt/user/appdata/syncthing:/config
 
       # Data folders
-      - /mnt/user/ComputerSyncs:/data1
+      - /mnt/user/ComputerSyncs/MacBook Backup:/data1
       - /mnt/user/SyncThings:/data2
 
     restart: unless-stopped

@@ -10,9 +10,6 @@ services:
     gpus: all
 
     # Environment
-    env_file:
-      - /mnt/user/ComputerSyncs/MacBook Backup/Configuration/Github/Docker-Containers/.env
-
     environment:
       TZ: ${TZ}
 
