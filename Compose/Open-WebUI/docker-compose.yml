@@ -1,0 +1,30 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+
+    networks:
+      SchmidtHouse: {}
+
+    ports:
+      - "3001:8080"
+
+    volumes:
+      - /mnt/user/appdata/open-webui:/app/backend/data
+
+    environment:
+      TZ: ${TZ}
+      OPENAI_API_BASE_URL: http://192.168.1.83:1234/v1
+      OPENAI_API_KEY: lm-studio
+
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/selfhst/icons/main/png/open-webui.png"
+      - "traefik.enable=true"
+      - "traefik.http.routers.open-webui.rule=Host(`openwebui.schmidtworx.com`)"
+      - "traefik.http.routers.open-webui.entrypoints=web"
+      - "traefik.http.services.open-webui.loadbalancer.server.port=8080"
+
+networks:
+  SchmidtHouse:
+    external: true
